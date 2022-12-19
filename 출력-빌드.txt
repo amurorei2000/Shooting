@@ -1,0 +1,26 @@
+﻿빌드 시작...
+1>------ 빌드 시작: 프로젝트: Shooting, 구성: Development_Editor x64 ------
+1>Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" ShootingEditor Win64 Development -Project="C:\Unreal Projects\Shooting\Shooting.uproject" -WaitMutex -FromMsBuild
+1>Log file: C:\Users\30202106-041\AppData\Local\UnrealBuildTool\Log.txt
+1>Invalidating makefile for ShootingEditor (working set of source files changed)
+1>Parsing headers for ShootingEditor
+1>  Running Internal UnrealHeaderTool "C:\Unreal Projects\Shooting\Shooting.uproject" "C:\Unreal Projects\Shooting\Intermediate\Build\Win64\ShootingEditor\Development\ShootingEditor.uhtmanifest" -WarningsAsErrors -installed
+1>Total of 2 written
+1>Reflection code generated for ShootingEditor in 1.7790762 seconds
+1>Building ShootingEditor...
+1>Using Visual Studio 2019 14.29.30147 toolchain (C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133) and Windows 10.0.22000.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+1>Determining max actions to execute in parallel (8 physical cores, 16 logical cores)
+1>  Executing up to 8 processes, one per physical core
+1>  Requested 1.5 GB free memory per action, 6.48 GB available: limiting max parallel actions to 4
+1>Building 6 actions with 4 processes...
+1>[1/6] Compile Shooting.init.gen.cpp
+1>[2/6] Compile CodeTest.gen.cpp
+1>[3/6] Compile CodeTest.cpp
+1>[4/6] Link UnrealEditor-Shooting-0017.lib
+1>   C:\Unreal Projects\Shooting\Intermediate\Build\Win64\UnrealEditor\Development\Shooting\UnrealEditor-Shooting-0017.lib 라이브러리 및 C:\Unreal Projects\Shooting\Intermediate\Build\Win64\UnrealEditor\Development\Shooting\UnrealEditor-Shooting-0017.exp 개체를 생성하고 있습니다.
+1>[5/6] Link UnrealEditor-Shooting-0017.dll
+1>   C:\Unreal Projects\Shooting\Intermediate\Build\Win64\UnrealEditor\Development\Shooting\UnrealEditor-Shooting-0017.suppressed.lib 라이브러리 및 C:\Unreal Projects\Shooting\Intermediate\Build\Win64\UnrealEditor\Development\Shooting\UnrealEditor-Shooting-0017.suppressed.exp 개체를 생성하고 있습니다.
+1>[6/6] WriteMetadata ShootingEditor.target
+1>Total time in Parallel executor: 2.29 seconds
+1>Total execution time: 6.12 seconds
+========== 빌드: 성공 1, 실패 0, 최신 0, 생략 0 ==========
