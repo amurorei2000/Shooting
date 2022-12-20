@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CodeTest.generated.h"
 
+
 UCLASS()
 class SHOOTING_API ACodeTest : public AActor
 {
@@ -74,6 +75,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = CodeVariable)
 	TMap<FString, float> distances;
+
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	class APointerTest* pointerTest;
+
 
 private:
 

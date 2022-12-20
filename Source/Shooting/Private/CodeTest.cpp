@@ -2,6 +2,7 @@
 
 
 #include "CodeTest.h"
+#include "PointerTest.h"
 
 #pragma warning (disable: 4458)	// c4458 경고 끄기
 
@@ -126,7 +127,6 @@ void ACodeTest::BeginPlay()
 	//}
 #pragma endregion
 
-
 #pragma region Array, Map
 
 	//distances.Add("Seoul", 250.5f);
@@ -151,6 +151,8 @@ void ACodeTest::BeginPlay()
 	//}
 #pragma endregion
 
+#pragma region Pointer1
+
 	//int32 number1 = 10;
 	//int32 copyNum = number1;
 	//number1 = 30;
@@ -164,12 +166,22 @@ void ACodeTest::BeginPlay()
 
 	//UE_LOG(LogTemp, Warning, TEXT("number1: %p, copyNum: %p"), &number1, copyNum);
 
-	int32 aa = 10;
-	int32 bb = 15;
-	int32 result;
-	result = Add(aa, bb);
+	//int32 aa = 10;
+	//int32 bb = 15;
+	//int32 result;
+	//result = Add(aa, bb);
 
-	UE_LOG(LogTemp, Warning, TEXT("Result = %d, aa = %d, bb = %d"), result, aa, bb);
+	//UE_LOG(LogTemp, Warning, TEXT("Result = %d, aa = %d, bb = %d"), result, aa, bb);
+
+#pragma endregion
+		
+	if (pointerTest != nullptr)
+	{
+		*(pointerTest->myAge) = 15;
+	}
+		//pointerTest->realAge = 15;
+
+		
 }
 
 void ACodeTest::MulitplicationTable(int32 guguNum)
@@ -187,7 +199,7 @@ void ACodeTest::Tick(float DeltaTime)
 
 }
 
-int32 ACodeTest::Add(int32 &num1, int32 &num2)
+int32 ACodeTest::Add(int32& num1, int32& num2)
 {
 	// to do
 	num1 *= 2;
