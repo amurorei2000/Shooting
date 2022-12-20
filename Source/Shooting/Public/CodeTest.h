@@ -24,11 +24,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// 정수형 변수 number를 선언한다.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CodeVarible)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CodeVariable)
 	int32 number;
 	//int32 number = 0;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=CodeVarible)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= CodeVariable)
 	int32 number2;
 
 	// 실수형 변수 fnumber를 선언한다.
@@ -47,20 +47,20 @@ public:
 	//bool isStudent = false;
 	bool isTeacher = true;
 
-	int32 Add(int32 num1, int32 num2);
+	int32 Add(int32& num1, int32 & num2);
 	int32 Subtract(int32 num1, int32 num2);
 	int32 Multiply(int32 num1, int32 num2);
 	float Divide(int32 num1, int32 num2);
 
 	int32 result = 100;
 
-	UPROPERTY(EditAnywhere, Category= CodeVarible)
+	UPROPERTY(EditAnywhere, Category= CodeVariable)
 	int32 age;
 
-	UPROPERTY(EditAnywhere, Category = CodeVarible)
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
 	int32 height;
 
-	UPROPERTY(EditAnywhere, Category = CodeVarible)
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
 	FString nation = FString(TEXT("한국"));
 
 	// 문자열 두 개를 받아서 문자열 한 개로 합쳐서 반환하는 함수를 만들고 싶다.
@@ -68,6 +68,12 @@ public:
 	FString StringAppender(FString a, FString b);
 
 	void MulitplicationTable(int32 guguNum);
+
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	TArray<int32> ages;
+
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	TMap<FString, float> distances;
 
 private:
 

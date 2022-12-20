@@ -108,20 +108,68 @@ void ACodeTest::BeginPlay()
 
 #pragma endregion
 
-	UE_LOG(LogTemp, Warning, TEXT("%d"), Add(3, 1));
+#pragma region 반복문
 
-	// 반복문
-	// "안녕하세요"라는 문자열을 10번 출력한다.
-	//MulitplicationTable(7);
+	//UE_LOG(LogTemp, Warning, TEXT("%d"), Add(3, 1));
 
-	for (int32 i = 2; i < 10; i++)
-	{
-		for (int32 j = 1; j < 10; j++)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%d x %d = %d"), i, j, i * j);
-		}
-		UE_LOG(LogTemp, Warning, TEXT("==================================="));
-	}
+	//// 반복문
+	//// "안녕하세요"라는 문자열을 10번 출력한다.
+	////MulitplicationTable(7);
+
+	//for (int32 i = 2; i < 10; i++)
+	//{
+	//	for (int32 j = 1; j < 10; j++)
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("%d x %d = %d"), i, j, i * j);
+	//	}
+	//	UE_LOG(LogTemp, Warning, TEXT("==================================="));
+	//}
+#pragma endregion
+
+
+#pragma region Array, Map
+
+	//distances.Add("Seoul", 250.5f);
+	//distances.Add("Incheon", 250.5f);
+	//distances.Add("SungNam", 135.5f);
+
+	//FString myKey = "Incheon";
+	//UE_LOG(LogTemp, Warning, TEXT("%s : %f"), *myKey, distances[myKey]);
+
+	//for (auto dist : distances)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("%s - %f"), *dist.Key, dist.Value)
+	//}
+
+
+	//UE_LOG(LogTemp, Warning, TEXT("Array Length %d"), ages.Num());
+
+	//for (int32 i = 0; i < ages.Num(); i++)
+	//for(int32 age : ages)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("%d"), age);
+	//}
+#pragma endregion
+
+	//int32 number1 = 10;
+	//int32 copyNum = number1;
+	//number1 = 30;
+
+	//UE_LOG(LogTemp, Warning, TEXT("number1: %d, copyNum: %d"), number1, copyNum);
+
+
+	//int32 number1 = 10;
+	//int32* copyNum = &number1;
+	//number1 = 30;
+
+	//UE_LOG(LogTemp, Warning, TEXT("number1: %p, copyNum: %p"), &number1, copyNum);
+
+	int32 aa = 10;
+	int32 bb = 15;
+	int32 result;
+	result = Add(aa, bb);
+
+	UE_LOG(LogTemp, Warning, TEXT("Result = %d, aa = %d, bb = %d"), result, aa, bb);
 }
 
 void ACodeTest::MulitplicationTable(int32 guguNum)
@@ -139,9 +187,12 @@ void ACodeTest::Tick(float DeltaTime)
 
 }
 
-int32 ACodeTest::Add(int32 num1, int32 num2)
+int32 ACodeTest::Add(int32 &num1, int32 &num2)
 {
 	// to do
+	num1 *= 2;
+	num2 *= 2;
+
 	int32 result = num1 + num2;
 	return result;
 }
