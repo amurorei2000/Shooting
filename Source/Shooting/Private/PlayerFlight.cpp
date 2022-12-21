@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Bullet.h"
 
 APlayerFlight::APlayerFlight()
 {
@@ -47,6 +48,14 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// 사용자가 입력한 방향대로 이동하고 싶다.
+	// 벡터의 정규화
+	direction.Normalize();
+
+	// P = P0 + vt
+	FVector dir = GetActorLocation() + direction * moveSpeed * DeltaTime;
+	SetActorLocation(dir);
+
 }
 
 void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,18 +68,37 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	// Vertical Axis 입력에 함수를 연결한다.
 	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::Vertical);
 
+	// Fire Action 입력에 함수를 연결한다.
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerFlight::FireBullet);
 }
 
 // 좌우 입력이 있을 때 실행될 함수
 void APlayerFlight::Horizontal(float value)
 {
 	h = value;
-	UE_LOG(LogTemp, Warning, TEXT("h : %.4f"), h);
+	//UE_LOG(LogTemp, Warning, TEXT("h : %.4f"), h);
+	direction.Y = h;
 }
 
 // 상하 입력이 있을 때 실행될 함수
 void APlayerFlight::Vertical(float value)
 {
 	v = value;
-	UE_LOG(LogTemp, Warning, TEXT("v : %.4f"), v);
+	//UE_LOG(LogTemp, Warning, TEXT("v : %.4f"), v);
+	direction.Z = v;
 }
+
+// 마우스 왼쪽 버튼을 눌렀을 때 실행될 함수
+void APlayerFlight::FireBullet()
+{
+	// 총알을 생성한다.
+	// 총알 블루프린트 변수
+	FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 90.0f;
+	FRotator spawnRotation = FRotator(90.0f, 0, 0);
+	FActorSpawnParameters param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+}
+
+

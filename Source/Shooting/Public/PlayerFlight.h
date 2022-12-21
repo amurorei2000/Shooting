@@ -28,11 +28,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UStaticMeshComponent* meshComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=PlayerSettings)
+	float moveSpeed = 500;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
+	TSubclassOf<class ABullet> bulletFactory;
+
 private:
 	void Horizontal(float value);
 	void Vertical(float value);
+	void FireBullet();
 
 	float h;
 	float v;
+	FVector direction;
 };
