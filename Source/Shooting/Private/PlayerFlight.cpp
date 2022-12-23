@@ -23,6 +23,9 @@ APlayerFlight::APlayerFlight()
 	// 박스 콜리전의 크기를 가로x세로x높이 모두 50센티미터로 설정한다.
 	boxComp->SetBoxExtent(FVector(50.0f));
 
+	// 박스 콜리전의 충돌 처리 프리셋을 "PlayerPreset"으로 설정한다.
+	boxComp->SetCollisionProfileName(TEXT("PlayerPreset"));
+
 	// 메시 컴포넌트를 생성한다.
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 

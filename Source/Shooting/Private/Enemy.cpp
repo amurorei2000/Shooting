@@ -17,6 +17,18 @@ AEnemy::AEnemy()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50.0f));
+	// Collision Enabled 값을 Query and Physics로 설정한다.
+	boxComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	// 응답 채널의 Object Type을 "Enemy"로 설정한다.
+	boxComp->SetCollisionObjectType(ECC_GameTraceChannel2);
+
+	// 응답 채널을 일괄적으로 Ignore 상태로 처리한다.
+	boxComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
+	// 응답 채널을 Player와 bullet 채널에 대해서만 overlap으로 처리한다.
+	boxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Overlap);
+	boxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	meshComp->SetupAttachment(RootComponent);
@@ -45,15 +57,17 @@ void AEnemy::BeginPlay()
 		{
 			target = *it;
 		}
+
 		if (target != nullptr)
 		{
 			float temp = target->moveSpeed;
-		}
 
-		// 2-2. 플레이어의 위치 - 나의 위치 = 갈 방향을 설정한다.
-		FVector targetDir = target->GetActorLocation() - GetActorLocation();
-		targetDir.Normalize();
-		direction = targetDir;
+			// 2-2. 플레이어의 위치 - 나의 위치 = 갈 방향을 설정한다.
+			FVector targetDir = target->GetActorLocation() - GetActorLocation();
+			targetDir.Normalize();
+			direction = targetDir;
+		}
+		
 	}
 	// 3. 그렇지 않으면...
 	else
@@ -61,6 +75,9 @@ void AEnemy::BeginPlay()
 		// 3-1. 정면으로 방향을 정한다.
 		direction = GetActorForwardVector();
 	}
+
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
+	boxComp->SetGenerateOverlapEvents(true);
 }
 
 // Called every frame
@@ -69,5 +86,16 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
+}
+
+void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+
+	if (player != nullptr)
+	{
+		player->Destroy();
+		Destroy();
+	}
 }
 
