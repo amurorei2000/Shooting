@@ -32,7 +32,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = EnemySettings)
 	float moveSpeed = 800;
 
+	UPROPERTY(EditDefaultsOnly, Category = EnemySettings)
+	int32 traceRate = 30;
+
+	
+
 private:
 	FVector direction;
-
+	class APlayerFlight* target;
 };
