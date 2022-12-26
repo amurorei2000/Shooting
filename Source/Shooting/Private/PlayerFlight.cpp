@@ -59,6 +59,13 @@ void APlayerFlight::BeginPlay()
 			subsys->AddMappingContext(imc_myMapping, 0);
 		}
 	}
+
+	// 현재 색상 값을 저장한다.
+	UMaterialInterface* iMat = meshComp->GetMaterial(0);
+	my_mat = Cast<UMaterialInstance>(iMat);
+	FHashedMaterialParameterInfo param;
+	
+	my_mat->GetVectorParameterValue(param, initColor);
 }
 
 void APlayerFlight::Tick(float DeltaTime)
@@ -71,7 +78,7 @@ void APlayerFlight::Tick(float DeltaTime)
 
 	// P = P0 + vt
 	FVector dir = GetActorLocation() + direction * moveSpeed * DeltaTime;
-	SetActorLocation(dir);
+	SetActorLocation(dir, true);
 
 }
 
@@ -97,6 +104,25 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	//// Fire Action 입력에 함수를 연결한다.
 	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerFlight::FireBullet);
+}
+
+void APlayerFlight::ReservationHitColor(float time)
+{
+	ChangeHitColor();
+	GetWorld()->GetTimerManager().SetTimer(colorTimer, this, &APlayerFlight::ChangeOriginColor, time, false);
+}
+
+// 부딪혔을 때 색깔을 0.2초 동안 바꾸는 함수
+void APlayerFlight::ChangeHitColor()
+{
+	//my_mat->SetVectorParameterValue(TEXT("myColor"), FLinearColor::Red);
+	//my_mat->SetVectorParameterValue(TEXT("myColor"), FLinearColor(255, 0, 0, 255));
+
+}
+
+void APlayerFlight::ChangeOriginColor()
+{
+	//my_mat->SetVectorParameterValue(TEXT("myColor"), initColor);
 }
 
 // 좌우 입력이 있을 때 실행될 함수

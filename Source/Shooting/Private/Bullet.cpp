@@ -35,6 +35,11 @@ void ABullet::BeginPlay()
 
 	// 오버랩 이벤트가 발생하도록 설정한다.
 	boxComp->SetGenerateOverlapEvents(true);
+
+	// 태어난 후 2초 뒤에 제거한다.
+	//SetLifeSpan(2.0f);
+
+	GetWorld()->GetTimerManager().SetTimer(lifeTimer, this, &ABullet::DestroyMySelf, 2.0f, false);
 }
 
 // Called every frame
@@ -65,3 +70,7 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 	}
 }
 
+void ABullet::DestroyMySelf()
+{
+	Destroy();
+}

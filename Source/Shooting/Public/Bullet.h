@@ -38,4 +38,7 @@ public:
 
 private:
 	FVector direction;
+	FTimerHandle lifeTimer;
+
+	void DestroyMySelf();
 };

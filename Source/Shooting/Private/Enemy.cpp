@@ -94,7 +94,9 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (player != nullptr)
 	{
-		player->Destroy();
+		//player->Destroy();
+		player->ReservationHitColor(0.2f);
+		
 		Destroy();
 	}
 }
