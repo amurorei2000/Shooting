@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
+#include "MyShootingGameModeBase.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -62,9 +64,21 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 
 	if (enemy != nullptr)
 	{
+		// 적이 있던 위치에 폭발 이펙트를 생성한다.
+		FVector enemyLoc = enemy->GetActorLocation();
+		FRotator enemyRot = enemy->GetActorRotation();
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosion_effect, enemyLoc, enemyRot, true);
+
 		// 적을 제거한다.
 		enemy->Destroy();
 		
+		// 게임 모드의 점수를 1점 추가한다.
+		AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+		AMyShootingGameModeBase* myGM = Cast<AMyShootingGameModeBase>(gm);
+		myGM->AddScore(1);
+		UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
+
 		// 나 자신도 제거한다.
 		Destroy();
 	}

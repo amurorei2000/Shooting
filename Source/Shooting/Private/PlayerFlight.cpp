@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 APlayerFlight::APlayerFlight()
 {
@@ -62,10 +63,21 @@ void APlayerFlight::BeginPlay()
 
 	// 현재 색상 값을 저장한다.
 	UMaterialInterface* iMat = meshComp->GetMaterial(0);
-	my_mat = Cast<UMaterialInstance>(iMat);
-	FHashedMaterialParameterInfo param;
+	FHashedMaterialParameterInfo param = FHashedMaterialParameterInfo(TEXT("myColor"));
 	
-	my_mat->GetVectorParameterValue(param, initColor);
+	// Material Interface에서 벡터 파라미터 값을 initColor 변수에 저장한다.
+	iMat->GetVectorParameterValue(param, initColor);
+
+	UE_LOG(LogTemp, Warning, TEXT("R: %f, G: %f, B:%f"), initColor.R, initColor.G, initColor.B);
+
+	// Material Interface를 이용해서 Material Instance Dynamic 개체를 만든다.
+	dynamicMat = UMaterialInstanceDynamic::Create(iMat, this);
+
+	// 생성한 다이나믹 매터리얼을 메시에 설정한다.
+	if (dynamicMat != nullptr)
+	{
+		meshComp->SetMaterial(0, dynamicMat);
+	}
 }
 
 void APlayerFlight::Tick(float DeltaTime)
@@ -108,21 +120,17 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void APlayerFlight::ReservationHitColor(float time)
 {
-	ChangeHitColor();
+	// 1. 색상을 Red 색깔로 변경한다.
+	dynamicMat->SetVectorParameterValue(TEXT("myColor"), (FVector4)FLinearColor::Red);
+
+	// 2. 원래 색상으로 되돌리는 함수를 바인딩한 타이머를 예약한다.
 	GetWorld()->GetTimerManager().SetTimer(colorTimer, this, &APlayerFlight::ChangeOriginColor, time, false);
 }
 
-// 부딪혔을 때 색깔을 0.2초 동안 바꾸는 함수
-void APlayerFlight::ChangeHitColor()
-{
-	//my_mat->SetVectorParameterValue(TEXT("myColor"), FLinearColor::Red);
-	//my_mat->SetVectorParameterValue(TEXT("myColor"), FLinearColor(255, 0, 0, 255));
-
-}
 
 void APlayerFlight::ChangeOriginColor()
 {
-	//my_mat->SetVectorParameterValue(TEXT("myColor"), initColor);
+	dynamicMat->SetVectorParameterValue(TEXT("myColor"), (FVector4)initColor);
 }
 
 // 좌우 입력이 있을 때 실행될 함수
@@ -166,6 +174,9 @@ void APlayerFlight::FireBullet()
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+
+	// 총알 발사 효과음을 실행한다.
+	UGameplayStatics::PlaySound2D(this, fireSound);
 }
 
 

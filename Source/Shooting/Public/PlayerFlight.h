@@ -47,8 +47,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	class UInputMappingContext* imc_myMapping;
 
+	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
+	class USoundBase* fireSound;
+
 	void ReservationHitColor(float time);
-	void ChangeHitColor();
 	void ChangeOriginColor();
 
 private:
@@ -64,5 +66,5 @@ private:
 	FVector direction;
 	FLinearColor initColor;
 	FTimerHandle colorTimer;
-	UMaterialInstance* my_mat;
+	UMaterialInstanceDynamic* dynamicMat;
 };
