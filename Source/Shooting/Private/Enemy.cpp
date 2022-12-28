@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PlayerFlight.h"
 #include "EngineUtils.h"
+#include "MyShootingGameModeBase.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -94,8 +95,16 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (player != nullptr)
 	{
-		//player->Destroy();
-		player->ReservationHitColor(0.2f);
+		player->Destroy();
+
+		// 메뉴 위젯을 생성하는 함수를 실행한다.
+		AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (gm != nullptr)
+		{
+			gm->ShowMenu();
+		}
+
+		//player->ReservationHitColor(0.2f);
 		
 		Destroy();
 	}

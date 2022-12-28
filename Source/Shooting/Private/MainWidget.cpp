@@ -17,5 +17,11 @@ void UMainWidget::PrintCurrentScore()
 
 		//curScore 텍스트 블록의 값으로 설정한다.
 		curScore->SetText(scoreText);
+
+		// 최고 점수(정수)를 문자열 형태로 바꾼다.
+		FText bestScoreText = FText::AsNumber(myGM->GetBestScore());
+
+		//bestScore 텍스트 블록의 값으로 설정한다.
+		bestScore->SetText(bestScoreText);
 	}
 }

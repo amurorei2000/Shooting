@@ -75,9 +75,11 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 		
 		// 게임 모드의 점수를 1점 추가한다.
 		AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+		//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
+
 		AMyShootingGameModeBase* myGM = Cast<AMyShootingGameModeBase>(gm);
 		myGM->AddScore(1);
-		UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
+		//UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
 
 		// 나 자신도 제거한다.
 		Destroy();

@@ -18,6 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting|Score", meta = (BindWidget))
 	class UTextBlock* curScore;
 
+	UPROPERTY(EditAnywhere, Category ="MySetting|Score", meta=(BindWidget))
+	class UTextBlock* bestScore;
+
 	void PrintCurrentScore();
 
 };
