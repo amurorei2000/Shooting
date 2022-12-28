@@ -42,6 +42,7 @@ void ABullet::BeginPlay()
 	//SetLifeSpan(2.0f);
 
 	GetWorld()->GetTimerManager().SetTimer(lifeTimer, this, &ABullet::DestroyMySelf, 2.0f, false);
+
 }
 
 // Called every frame

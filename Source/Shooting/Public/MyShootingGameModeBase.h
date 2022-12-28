@@ -34,7 +34,6 @@ public:
 
 	void ShowMenu();
 	
-	
 private:
 	int32 currentScore = 0;
 	int32 bestScore = 0;

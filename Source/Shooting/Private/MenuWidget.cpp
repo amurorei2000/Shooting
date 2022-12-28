@@ -6,7 +6,7 @@
 #include "Components/Button.h"
 
 
-void UMenuWidget::InitializeNativeClassData()
+void UMenuWidget::NativeConstruct()
 {
 	btn_Resume->OnClicked.AddDynamic(this, &UMenuWidget::ResumeGame);
 }
@@ -15,5 +15,5 @@ void UMenuWidget::ResumeGame()
 {
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(false);
-	//this->RemoveFromParent();
+	this->RemoveFromViewport();
 }

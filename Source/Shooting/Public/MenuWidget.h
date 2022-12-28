@@ -22,8 +22,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidget))
 	class UButton* btn_Quit;
 
-	virtual void InitializeNativeClassData() override;
-	//virtual void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 
 private:
 
