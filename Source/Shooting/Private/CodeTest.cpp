@@ -173,13 +173,14 @@ void ACodeTest::BeginPlay()
 
 	//UE_LOG(LogTemp, Warning, TEXT("Result = %d, aa = %d, bb = %d"), result, aa, bb);
 
-#pragma endregion
 		
-	if (pointerTest != nullptr)
-	{
-		*(pointerTest->myAge) = 15;
-	}
+	//if (pointerTest != nullptr)
+	//{
+	//	*(pointerTest->myAge) = 15;
+	//}
 		//pointerTest->realAge = 15;
+
+#pragma endregion
 
 		
 }
