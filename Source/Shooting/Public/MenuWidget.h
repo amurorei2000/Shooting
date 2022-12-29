@@ -25,7 +25,13 @@ public:
 	virtual void NativeConstruct() override;
 
 private:
-
+	UFUNCTION()
 	void ResumeGame();
+
+	UFUNCTION()
+	void RestartGame();
+
+	UFUNCTION()
+	void QuitGame();
 
 };

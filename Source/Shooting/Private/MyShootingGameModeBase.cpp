@@ -37,6 +37,14 @@ void AMyShootingGameModeBase::BeginPlay()
 		main_UI->PrintCurrentScore();
 
 	}
+
+	FString testPath = FPaths::GetProjectFilePath();
+	//FString testPath = FPaths::Combine("http://www.naver.com", "ajfdklasf/adkla");
+
+	//UE_LOG(LogTemp, Warning, TEXT("test path: %s"), *testPath);
+
+	// 스크린에 로그 출력하기
+	//GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Emerald, TEXT("logTest"), true);
 }
 
 void AMyShootingGameModeBase::AddScore(int32 count)
