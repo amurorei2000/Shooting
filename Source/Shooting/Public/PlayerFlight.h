@@ -45,6 +45,9 @@ public:
 	class UInputAction* ia_fire;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
+	class UInputAction* ia_boost;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	class UInputMappingContext* imc_myMapping;
 
 	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
@@ -60,7 +63,13 @@ private:
 	void Horizontal(const FInputActionValue& value);
 	void Vertical(const FInputActionValue& value);
 	void FireBullet();
+	void StartBoost();
+	void EndBoost();
+	void Boost();
 
+	bool isBoosting = false;
+
+	float moveSpeedOrigin = 500;
 	float h;
 	float v;
 	FVector direction;

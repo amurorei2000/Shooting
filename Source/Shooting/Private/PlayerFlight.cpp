@@ -89,7 +89,7 @@ void APlayerFlight::Tick(float DeltaTime)
 	direction.Normalize();
 
 	// P = P0 + vt
-	FVector dir = GetActorLocation() + direction * moveSpeed * DeltaTime;
+	FVector dir = GetActorLocation() + direction * moveSpeedOrigin * DeltaTime;
 	SetActorLocation(dir, true);
 
 }
@@ -107,6 +107,8 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	enhancedInputComponent->BindAction(ia_vertical, ETriggerEvent::Triggered, this, &APlayerFlight::Vertical);
 	enhancedInputComponent->BindAction(ia_vertical, ETriggerEvent::Completed, this, &APlayerFlight::Vertical);
 	enhancedInputComponent->BindAction(ia_fire, ETriggerEvent::Triggered, this, &APlayerFlight::FireBullet);
+	enhancedInputComponent->BindAction(ia_boost, ETriggerEvent::Started, this, &APlayerFlight::Boost);
+	enhancedInputComponent->BindAction(ia_boost, ETriggerEvent::Completed, this, &APlayerFlight::Boost);
 
 	//// Horizontal Axis 입력에 함수를 연결한다.
 	//PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::Horizontal);
@@ -179,4 +181,30 @@ void APlayerFlight::FireBullet()
 	UGameplayStatics::PlaySound2D(this, fireSound);
 }
 
+void APlayerFlight::StartBoost()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Start Boost!"));
+	moveSpeedOrigin = moveSpeed * 2;
+}
 
+void APlayerFlight::EndBoost()
+{
+	UE_LOG(LogTemp, Warning, TEXT("End Boost!"));
+	moveSpeedOrigin = moveSpeed;
+}
+
+void APlayerFlight::Boost()
+{
+	isBoosting = !isBoosting;
+
+	//if (isBoosting)
+	//{
+	//	moveSpeedOrigin = moveSpeed * 2;
+	//}
+	//else
+	//{
+	//	moveSpeedOrigin = moveSpeed;
+	//}
+
+	moveSpeedOrigin = isBoosting ? moveSpeed * 2 : moveSpeed;
+}

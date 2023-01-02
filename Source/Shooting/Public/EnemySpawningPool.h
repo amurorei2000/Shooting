@@ -37,6 +37,10 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = PoolSettings)
 	class USceneComponent* rootScene;
 
+	UPROPERTY(EditAnywhere)
+	bool isSpawn = false;
+
+
 private:
 	float currentTime = 0;
 };
