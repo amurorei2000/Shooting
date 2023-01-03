@@ -170,13 +170,35 @@ void APlayerFlight::FireBullet()
 {
 	// 총알을 생성한다.
 	// 총알 블루프린트 변수
-	FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 90.0f;
-	FRotator spawnRotation = FRotator(90.0f, 0, 0);
-	FActorSpawnParameters param;
-	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	// 총알을 bulletCount 수만큼 동시에 발사한다.
 
-	GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+	for (int32 i = 0; i < bulletCount; i++)
+	{
+		// 총알의 전체 간격
+		float totalSize = (bulletCount - 1) * bulletSpacing;
 
+		// 기준 위치
+		float base_y = totalSize * -0.5f;
+
+		// 기준 위치로 오프셋 벡터를 만든다.
+		FVector offset = FVector(0, base_y + 150 * i, 0);
+
+		FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 90.0f;
+		// 오프셋만큼 위치를 보정한다.
+		spawnPosition += offset;
+		FRotator spawnRotation = FRotator(90.0f, 0, 0);
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+		
+		//생성된 총알(bullet)을 bulletAngle 만큼 일정하게 회전시킨다.
+		float base_yaw = (bulletCount - 1) * bulletAngle * -0.5f;
+		FRotator rot_base = FRotator(0, base_yaw + bulletAngle * i, 0);
+
+		bullet->AddActorLocalRotation(rot_base);
+
+	}
 	// 총알 발사 효과음을 실행한다.
 	UGameplayStatics::PlaySound2D(this, fireSound);
 }
