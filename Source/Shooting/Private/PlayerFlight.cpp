@@ -10,6 +10,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "EngineUtils.h"
+#include "Enemy.h"
+#include "MyShootingGameModeBase.h"
 
 APlayerFlight::APlayerFlight()
 {
@@ -32,6 +35,7 @@ APlayerFlight::APlayerFlight()
 
 	// 메시 컴포넌트를 루트 컴포넌트의 하위 개체로 등록한다.
 	meshComp->SetupAttachment(RootComponent);
+	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// 메시 컴포넌트의 static mesh 항목에 큐브 파일을 할당한다.
 	ConstructorHelpers::FObjectFinder<UStaticMesh> cubeMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
@@ -109,6 +113,7 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	enhancedInputComponent->BindAction(ia_fire, ETriggerEvent::Triggered, this, &APlayerFlight::FireBullet);
 	enhancedInputComponent->BindAction(ia_boost, ETriggerEvent::Started, this, &APlayerFlight::Boost);
 	enhancedInputComponent->BindAction(ia_boost, ETriggerEvent::Completed, this, &APlayerFlight::Boost);
+	enhancedInputComponent->BindAction(ia_ULT, ETriggerEvent::Triggered, this, &APlayerFlight::ExplosionAll);
 
 	//// Horizontal Axis 입력에 함수를 연결한다.
 	//PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::Horizontal);
@@ -168,6 +173,11 @@ void APlayerFlight::Vertical(const FInputActionValue& value)
 // 마우스 왼쪽 버튼을 눌렀을 때 실행될 함수
 void APlayerFlight::FireBullet()
 {
+	if (!canFire)
+	{
+		return;
+	}
+
 	// 총알을 생성한다.
 	// 총알 블루프린트 변수
 	// 총알을 bulletCount 수만큼 동시에 발사한다.
@@ -229,4 +239,36 @@ void APlayerFlight::Boost()
 	//}
 
 	moveSpeedOrigin = isBoosting ? moveSpeed * 2 : moveSpeed;
+}
+
+// 궁극기 폭탄 함수
+void APlayerFlight::ExplosionAll()
+{
+	// 모든 Enemy를 파괴한다.
+
+	// 1. TActorIterator<T>를 이용한 방식
+	/*for (TActorIterator<AEnemy> enemy(GetWorld()); enemy; ++enemy)
+	{
+		enemy->DestroyMySelf();
+	}*/
+
+	// 2. TArray<T> 배열을 이용한 방식
+	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+	TArray<AEnemy*> testArr = gm->enemies;
+
+	if (gm != nullptr)
+	{
+		for (int32 i = 0; i < testArr.Num(); i++)
+		{
+			// Pending Kill 상태 체크
+			if (IsValid(testArr[i]))
+			{
+				testArr[i]->DestroyMySelf();
+			}
+		}
+
+		// 리스트를 한 번 초기화한다.
+		gm->enemies.Empty();
+	}
+	
 }

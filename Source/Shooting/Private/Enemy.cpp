@@ -79,6 +79,14 @@ void AEnemy::BeginPlay()
 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
 	boxComp->SetGenerateOverlapEvents(true);
+
+	// 게임 모드의 enemies 배열에 자기 자신을 넣는다.
+	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	if (gm != nullptr)
+	{
+		gm->enemies.Emplace(this);
+	}
 }
 
 // Called every frame
@@ -107,6 +115,23 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		//player->ReservationHitColor(0.2f);
 		
 		Destroy();
+	}
+}
+
+void AEnemy::DestroyMySelf()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosion_fx, GetActorLocation(), GetActorRotation(), true);
+	Destroy();
+}
+
+void AEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// 자기 자신을 배열에서 제거한다.
+	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	if (gm != nullptr)
+	{
+		gm->enemies.Remove(this);
 	}
 }
 

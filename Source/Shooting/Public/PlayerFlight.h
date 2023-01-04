@@ -48,6 +48,9 @@ public:
 	class UInputAction* ia_boost;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
+	class UInputAction* ia_ULT;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	class UInputMappingContext* imc_myMapping;
 
 	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
@@ -65,6 +68,8 @@ public:
 	void ReservationHitColor(float time);
 	void ChangeOriginColor();
 
+	bool canFire = true;
+
 private:
 	//void Horizontal(float value);
 	//void Vertical(float value);
@@ -75,6 +80,9 @@ private:
 	void StartBoost();
 	void EndBoost();
 	void Boost();
+
+	UFUNCTION()
+	void ExplosionAll();
 
 	bool isBoosting = false;
 
