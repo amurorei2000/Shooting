@@ -67,6 +67,8 @@ void AEnemy::BeginPlay()
 			FVector targetDir = target->GetActorLocation() - GetActorLocation();
 			targetDir.Normalize();
 			direction = targetDir;
+
+			//target->playerBomb.AddDynamic(this, &AEnemy::DestroyMySelf);
 		}
 		
 	}
@@ -81,12 +83,14 @@ void AEnemy::BeginPlay()
 	boxComp->SetGenerateOverlapEvents(true);
 
 	// 게임 모드의 enemies 배열에 자기 자신을 넣는다.
-	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+	//AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	if (gm != nullptr)
-	{
-		gm->enemies.Emplace(this);
-	}
+	//if (gm != nullptr)
+	//{
+	//	gm->enemies.Emplace(this);
+	//}
+
+	target->OnSetDirection.AddDynamic(this, &AEnemy::SetNewDirection);
 }
 
 // Called every frame
@@ -127,11 +131,20 @@ void AEnemy::DestroyMySelf()
 void AEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// 자기 자신을 배열에서 제거한다.
-	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+	/*AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
 
 	if (gm != nullptr)
 	{
 		gm->enemies.Remove(this);
-	}
+	}*/
+
+	// 델리게이트에 걸어놓은 자기 함수를 제거한다.
+	target->playerBomb.RemoveDynamic(this, &AEnemy::DestroyMySelf);
+}
+
+void AEnemy::SetNewDirection(FVector newDir)
+{
+	// 이동 방향을 newDir로 바꾼다.
+	direction = newDir;
 }
 

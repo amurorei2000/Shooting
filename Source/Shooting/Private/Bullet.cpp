@@ -8,6 +8,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyShootingGameModeBase.h"
 
+
+
+
 // Sets default values
 ABullet::ABullet()
 {
@@ -79,7 +82,7 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 		//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 
 		AMyShootingGameModeBase* myGM = Cast<AMyShootingGameModeBase>(gm);
-		myGM->AddScore(1);
+		myGM->AddScore(20);
 		//UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
 
 		// 나 자신도 제거한다.

@@ -7,6 +7,12 @@
 #include "InputActionValue.h"
 #include "PlayerFlight.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FULTbomb);
+
+// 1. 벡터를 인자로 넘겨받는 델리게이트 선언(FDirectionModifier)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDirectionModifier, FVector, newDir);
+
+
 UCLASS()
 class SHOOTING_API APlayerFlight : public APawn
 {
@@ -69,6 +75,9 @@ public:
 	void ChangeOriginColor();
 
 	bool canFire = true;
+
+	FULTbomb playerBomb;
+	FDirectionModifier OnSetDirection;
 
 private:
 	//void Horizontal(float value);

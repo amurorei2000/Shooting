@@ -206,7 +206,10 @@ void APlayerFlight::FireBullet()
 		float base_yaw = (bulletCount - 1) * bulletAngle * -0.5f;
 		FRotator rot_base = FRotator(0, base_yaw + bulletAngle * i, 0);
 
-		bullet->AddActorLocalRotation(rot_base);
+		if (bullet != nullptr && IsValid(bullet))
+		{
+			bullet->AddActorLocalRotation(rot_base);
+		}
 
 	}
 	// 총알 발사 효과음을 실행한다.
@@ -246,6 +249,10 @@ void APlayerFlight::ExplosionAll()
 {
 	// 모든 Enemy를 파괴한다.
 
+#pragma region MyRegion
+
+
+
 	// 1. TActorIterator<T>를 이용한 방식
 	/*for (TActorIterator<AEnemy> enemy(GetWorld()); enemy; ++enemy)
 	{
@@ -253,22 +260,27 @@ void APlayerFlight::ExplosionAll()
 	}*/
 
 	// 2. TArray<T> 배열을 이용한 방식
-	AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
-	TArray<AEnemy*> testArr = gm->enemies;
+	//AMyShootingGameModeBase* gm = Cast<AMyShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+	//TArray<AEnemy*> testArr = gm->enemies;
 
-	if (gm != nullptr)
-	{
-		for (int32 i = 0; i < testArr.Num(); i++)
-		{
-			// Pending Kill 상태 체크
-			if (IsValid(testArr[i]))
-			{
-				testArr[i]->DestroyMySelf();
-			}
-		}
+	//if (gm != nullptr)
+	//{
+	//	for (int32 i = 0; i < testArr.Num(); i++)
+	//	{
+	//		// Pending Kill 상태 체크
+	//		if (IsValid(testArr[i]))
+	//		{
+	//			testArr[i]->DestroyMySelf();
+	//		}
+	//	}
 
-		// 리스트를 한 번 초기화한다.
-		gm->enemies.Empty();
-	}
+	//	// 리스트를 한 번 초기화한다.
+	//	gm->enemies.Empty();
+	//}
+#pragma endregion
 	
+	// 3. 델리게이트를 실행한다.
+	// playerBomb.Broadcast();
+	OnSetDirection.Broadcast(direction);
+
 }

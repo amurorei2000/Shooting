@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
 	TArray<class AEnemy*> enemies;
 
+	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
+	TSubclassOf<class ABossActor> boss;
+
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetCurrentScore() { return currentScore;}
@@ -46,6 +49,8 @@ private:
 
 	FString filePath = FString("C:/Unreal Projects/Shooting/Content/SaveScore/BestScore.txt");
 	FString filePath2 = FString("../../../Content/SaveScore/BestScore.txt");
+	bool bIsAppearBoss = false;
 
-
+	void SpawnBoss();
+	void StopAllSpawn();
 };

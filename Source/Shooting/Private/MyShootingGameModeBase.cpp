@@ -5,6 +5,9 @@
 #include "MainWidget.h"
 #include "MenuWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "BossActor.h"
+#include "EngineUtils.h"
+#include "EnemySpawningPool.h"
 
 void AMyShootingGameModeBase::BeginPlay()
 {
@@ -64,10 +67,40 @@ void AMyShootingGameModeBase::AddScore(int32 count)
 
 	}
 
+	// 만일, 현재 점수가 30점 이상이면
+	if (currentScore >= 30 && !bIsAppearBoss)
+	{
+		bIsAppearBoss = true;
+
+		// 4초 뒤에 보스를 생성한다.
+		FTimerHandle spawnHandle;
+
+		GetWorld()->GetTimerManager().SetTimer(spawnHandle, this, &AMyShootingGameModeBase::SpawnBoss, 4, false);
+
+		// 모든 스폰을 중단한다.
+		StopAllSpawn();
+	}
+	
+
+
 	// 현재 점수를 위젯의 curScore 텍스트 블록에 반영한다.
 	if (main_UI != nullptr)
 	{
 		main_UI->PrintCurrentScore();
+	}
+}
+
+void AMyShootingGameModeBase::SpawnBoss()
+{
+	GetWorld()->SpawnActor<ABossActor>(boss, FVector(0, 0, 700), FRotator::ZeroRotator);
+}
+
+
+void AMyShootingGameModeBase::StopAllSpawn()
+{
+	for (TActorIterator<AEnemySpawningPool> pool(GetWorld()); pool; ++pool)
+	{
+		pool->isSpawn = false;
 	}
 }
 
