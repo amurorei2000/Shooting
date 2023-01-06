@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere, Category ="MySetting|Score", meta=(BindWidget))
 	class UTextBlock* bestScore;
 
+	UPROPERTY(EditAnywhere, Category = "MySetting|Score", meta =(BindWidgetAnim), Transient)
+	class UWidgetAnimation* scoreAnim;
+
 	void PrintCurrentScore();
 
 };

@@ -23,5 +23,8 @@ void UMainWidget::PrintCurrentScore()
 
 		//bestScore 텍스트 블록의 값으로 설정한다.
 		bestScore->SetText(bestScoreText);
+
+		// scoreAnim 애니메이션을 실행한다.
+		PlayAnimation(scoreAnim, 0, 1, EUMGSequencePlayMode::Forward);
 	}
 }
